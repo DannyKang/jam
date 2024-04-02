@@ -22,7 +22,7 @@ echo $INSTANCE_ID && echo ''
 # echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> ~/.bash_profile 
 # echo $AWS_ACCESS_KEY_ID && echo ''
 
-REPO="https://github.com/John1Q84/pub_o11y_jam.git"
+REPO=https://github.com/jacksalvador/jam.git"
 
 # curl http://169.254.169.254/latest/dynamic/instance-identity/document | grep availabilityZone | cut -d \" -f 4 | sed 's/.$//'
 
@@ -38,7 +38,7 @@ main() {
     echo "/opt/workspace <- home dir"
     export HOME_DIR="/opt/workspace"
     cd $HOME_DIR
-    
+
     sleep=0
     while true; do
         install_tools &&
@@ -98,13 +98,13 @@ git_init(){
     sudo yum history new
     sudo yum install git -y
     cd $HOME_DIR
-    if [ -d $HOME_DIR/pub_o11y_jam ] ; then
+    if [ -d $HOME_DIR/jacksalvador ] ; then
         echo 'remove old git info'
-        rm -rf $HOME_DIR/pub_o11y_jam
+        rm -rf $HOME_DIR/jacksalvador
     fi
-    git init pub_o11y_jam
-    # git clone $REPO $HOME_DIR/pub_o11y_jam
-    cd pub_o11y_jam
+    git init jacksalvador
+    # git clone $REPO $HOME_DIR/jacksalvador
+    cd jacksalvador
     git remote add -f origin $REPO
     git pull origin main
     echo ' '
@@ -113,8 +113,8 @@ git_init(){
 
 run_terraform(){
     echo '>> terraform init & apply step ...'    
-    cd $HOME_DIR/pub_o11y_jam
-    if [ -d $HOME_DIR/pub_o11y_jam/.terraform ] ; then  # `terraform init` command will generate $HOME_DIR/pub_o11y_jam/.terraform directory 
+    cd $HOME_DIR/jacksalvador
+    if [ -d $HOME_DIR/jacksalvador/.terraform ] ; then  # `terraform init` command will generate $HOME_DIR/jacksalvador/.terraform directory 
         terraform plan && terraform apply -auto-approve >> tfapply.log
     else
         terraform init -input=false && terraform plan && terraform apply -auto-approve  >> tfapply.log
