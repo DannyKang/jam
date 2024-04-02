@@ -106,7 +106,7 @@ git_init(){
     # git clone $REPO $HOME_DIR/jacksalvador
     cd jacksalvador
     git remote add -f origin $REPO
-    git pull origin main
+    git pull origin master
     echo ' '
     echo '>> end git init'
 }
