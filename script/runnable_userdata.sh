@@ -22,7 +22,7 @@ echo $INSTANCE_ID && echo ''
 # echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> ~/.bash_profile 
 # echo $AWS_ACCESS_KEY_ID && echo ''
 
-REPO=https://github.com/jacksalvador/jam.git"
+REPO="https://github.com/jacksalvador/jam.git"
 
 # curl http://169.254.169.254/latest/dynamic/instance-identity/document | grep availabilityZone | cut -d \" -f 4 | sed 's/.$//'
 
