@@ -15,16 +15,7 @@ export INSTANCE_ID=`curl -s -H "X-aws-ec2-metadata-token: $TOKEN"  http://169.25
 echo "export INSTANCE_ID=${INSTANCE_ID}" >> ~/.bash_profile 
 echo $INSTANCE_ID && echo ''
 
-# echo '>> Set AWS Credential for terraform ....'
-# export AWS_ACCESS_KEY_ID=`curl -s -H "X-aws-ec2-metadata-token: $TOKEN"  http://169.254.169.254/latest/meta-data/identity-credentials/ec2/security-credentials/ec2-instance/  |grep AccessKeyId | cut -d \" -f 4`
-# export AWS_SECRET_ACCESS_KEY=`curl -s -H "X-aws-ec2-metadata-token: $TOKEN"  http://169.254.169.254/latest/meta-data/identity-credentials/ec2/security-credentials/ec2-instance/  |grep SecretAccessKey | cut -d \" -f 4`
-# echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> ~/.bash_profile 
-# echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> ~/.bash_profile 
-# echo $AWS_ACCESS_KEY_ID && echo ''
-
 REPO="https://github.com/jacksalvador/jam.git"
-
-# curl http://169.254.169.254/latest/dynamic/instance-identity/document | grep availabilityZone | cut -d \" -f 4 | sed 's/.$//'
 
 main() {
     if [ $(id -u) -ne 0 ]; then
@@ -56,13 +47,12 @@ install_tools(){
     echo '>> install tools step'
     # reset yum history
     sudo yum history new
-
     
     #   bash-completion: supports command name auto-completion for supported commands
     #   moreutils: a growing collection of the unix tools that nobody thought to write long ago when unix was young
     #   yum-utils: a prerequisite to install terraformn binary
     sudo yum -y install bash-completion moreutils yum-utils jq
-
+    
     #   install latest terraform binary
     echo ">>> install terraform"
     sudo yum history new
