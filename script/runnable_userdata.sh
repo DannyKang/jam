@@ -35,7 +35,6 @@ main() {
         install_tools &&
         git_init &&
         run_terraform &&
-        kube_config &&
         break
     done
     echo 'initializing complete !!'
@@ -113,9 +112,8 @@ run_terraform(){
     echo "export CLUSTER_NAME=$CLUSTER_NAME" >> ~/.bash_profile 
     echo ' '
     echo '>> running terraform complete!!'
-}
-
-kube_config(){
+    echo ' '
+    # kube_config
     echo '>> init kubectl configuration ...'
     echo `aws eks update-kubeconfig --region $REGION --name $CLUSTER_NAME`
 
