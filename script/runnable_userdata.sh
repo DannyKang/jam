@@ -51,7 +51,7 @@ install_tools(){
     #   bash-completion: supports command name auto-completion for supported commands
     #   moreutils: a growing collection of the unix tools that nobody thought to write long ago when unix was young
     #   yum-utils: a prerequisite to install terraformn binary
-    sudo yum -y install bash-completion moreutils yum-utils jq
+    sudo yum -y install bash-completion moreutils yum-utils jq pip
     
     #   install latest terraform binary
     echo ">>> install terraform"
@@ -88,13 +88,13 @@ git_init(){
     sudo yum history new
     sudo yum install git -y
     cd $HOME_DIR
-    if [ -d $HOME_DIR/jacksalvador ] ; then
+    if [ -d $HOME_DIR/jam ] ; then
         echo 'remove old git info'
-        rm -rf $HOME_DIR/jacksalvador
+        rm -rf $HOME_DIR/jam
     fi
-    git init jacksalvador
-    # git clone $REPO $HOME_DIR/jacksalvador
-    cd jacksalvador
+    git init jam
+    # git clone $REPO $HOME_DIR/jam
+    cd jam
     git remote add -f origin $REPO
     git pull origin master
     echo ' '
@@ -103,8 +103,8 @@ git_init(){
 
 run_terraform(){
     echo '>> terraform init & apply step ...'    
-    cd $HOME_DIR/jacksalvador
-    if [ -d $HOME_DIR/jacksalvador/.terraform ] ; then  # `terraform init` command will generate $HOME_DIR/jacksalvador/.terraform directory 
+    cd $HOME_DIR/jam
+    if [ -d $HOME_DIR/jam/.terraform ] ; then  # `terraform init` command will generate $HOME_DIR/jam/.terraform directory 
         terraform plan && terraform apply -auto-approve >> tfapply.log
     else
         terraform init -input=false && terraform plan && terraform apply -auto-approve  >> tfapply.log
@@ -122,17 +122,17 @@ kube_config(){
     if [ -d ~/.kube/ ] ; then  # `aws eks update-kubeconfig command generate '~/.kube' directory 
         echo 'kubectl config init complete'
 
-        export JAM_LABS_USER_ARN=`aws iam list-users --query "Users[?UserName=='WSControlPlaneUser'].Arn" --output text` 
-        echo "export JAM_LABS_USER_ARN=${JAM_LABS_USER_ARN}" >> ~/.bash_profile
-        echo $JAM_LABS_USER_ARN && echo ''
+        export JAM_LABS_ROLE_ARN=`aws iam list-roles --query "Roles[?starts_with(RoleName,'WSParticipantRole')].Arn" --output text` 
+        echo "export JAM_LABS_ROLE_ARN=${JAM_LABS_ROLE_ARN}" >> ~/.bash_profile
+        echo $JAM_LABS_ROLE_ARN && echo ''
 
         echo '>> rbac authorization'
         eksctl create iamidentitymapping \
         --cluster ${CLUSTER_NAME} \
-        --arn ${JAM_LABS_USER_ARN} \
-        --username WSControlPlaneUser \
+        --region ${REGION} \
+        --arn ${JAM_LABS_ROLE_ARN} \
         --group system:masters \
-        --region ${REGION}
+        --no-duplicate-arns
         echo ''
         
     else

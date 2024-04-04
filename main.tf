@@ -52,8 +52,8 @@ module "eks_blueprints" {
 
   map_roles = [
     {
-      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/TeamRole"
-      username = "ops-role"         # The user name within Kubernetes to map to the IAM role
+      rolearn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/WSParticipantRole"
+      username = "Participant"      # The user name within Kubernetes to map to the IAM role
       groups   = ["system:masters"] # A list of groups within Kubernetes to which the role is mapped; Checkout K8s Role and Rolebindings
     }
   ]
@@ -62,7 +62,7 @@ module "eks_blueprints" {
   managed_node_groups = {
     mg_5 = {
       node_group_name = local.node_group_name
-      instance_types  = ["m5.xlarge"]
+      instance_types  = ["m5.large"]
       subnet_ids      = module.vpc.private_subnets
     }
   }
