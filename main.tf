@@ -98,6 +98,8 @@ module "kubernetes_addons" {
     addon_name      = "coredns"
     addon_version   = local.eks_addon_coredns_version
     service_account = "coredns"
+    resolve_conflicts_on_create = "PRESERVE"
+    resolve_conflicts_on_update = "OVERWRITE"
   }
   enable_amazon_eks_kube_proxy = true
   amazon_eks_kube_proxy_config = {
