@@ -8,6 +8,7 @@ echo ''
 echo '>> Get Region ....'
 export REGION=`curl -s -H "X-aws-ec2-metadata-token: $TOKEN"  http://169.254.169.254/latest/dynamic/instance-identity/document/ | grep region | cut -d \" -f 4`
 echo "export REGION=${REGION}" >> ~/.bash_profile 
+export AWS_REGION=${REGION}
 echo $REGION && echo ''
 
 echo '>> Get instance id ....'
