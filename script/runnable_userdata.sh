@@ -99,23 +99,23 @@ git_init(){
     sudo yum history new
     sudo yum install git -y
     cd $HOME_DIR
-    if [ -d $HOME_DIR/pub_o11y_jam ] ; then
+    if [ -d $HOME_DIR/jam ] ; then
         echo 'remove old git info'
-        rm -rf $HOME_DIR/pub_o11y_jam
+        rm -rf $HOME_DIR/jam
     fi
-    git init pub_o11y_jam
-    # git clone $REPO $HOME_DIR/pub_o11y_jam
-    cd pub_o11y_jam
+    git init jam
+    # git clone $REPO $HOME_DIR/jam
+    cd jam
     git remote add -f origin $REPO
-    git pull origin main
+    git pull origin master
     echo ' '
     echo '>> end git init'
 }
 
 run_terraform(){
     echo '>> terraform init & apply step ...'    
-    cd $HOME_DIR/pub_o11y_jam
-    if [ -d $HOME_DIR/pub_o11y_jam/.terraform ] ; then  # `terraform init` command will generate $HOME_DIR/pub_o11y_jam/.terraform directory 
+    cd $HOME_DIR/jam
+    if [ -d $HOME_DIR/jam/.terraform ] ; then   # `terraform init` command will generate $HOME_DIR/pub_o11y_jam/.terraform directory 
         terraform plan && terraform apply -auto-approve >> tfapply.log
     else
         terraform init -input=false && terraform plan && terraform apply -auto-approve  >> tfapply.log
