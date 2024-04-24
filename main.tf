@@ -70,3 +70,37 @@ module "eks_blueprints" {
 
   tags = local.tags
 }
+
+module "kubernetes_addons" {
+  #source         = "github.com/aws-ia/terraform-aws-eks-blueprints?ref=v4.27.0/modules/kubernetes-addons"
+  source         = "github.com/aws-ia/terraform-aws-eks-blueprints?ref=v4.32.1/modules/kubernetes-addons"
+  eks_cluster_id = module.eks_blueprints.eks_cluster_id
+
+  ## EKS Addons
+  enable_aws_load_balancer_controller = true
+  aws_load_balancer_controller_helm_config = {
+    name            = "aws-load-balancer-controller"
+    chart           = "aws-load-balancer-controller"
+    service_account = "aws-lb-sa"
+    namespace       = "kube-system"
+  }
+
+  enable_amazon_eks_vpc_cni = true
+  amazon_eks_vpc_cni_config = {
+    addon_name      = "vpc-cni"
+    addon_version   = local.eks_addon_vpc_cni_version
+    service_account = "aws-node"
+  }
+  enable_amazon_eks_coredns = true
+  amazon_eks_coredns_config = {
+    addon_name      = "coredns"
+    addon_version   = local.eks_addon_coredns_version
+    service_account = "coredns"
+  }
+  enable_amazon_eks_kube_proxy = true
+  amazon_eks_kube_proxy_config = {
+    addon_name      = "kube-proxy"
+    addon_version   = local.eks_addon_kube_proxy_version
+    service_account = "kube-proxy"
+  }
+}
